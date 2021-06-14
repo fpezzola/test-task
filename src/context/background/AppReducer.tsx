@@ -1,7 +1,7 @@
-import Actions, { SetStateAction, SetTransactionAction } from '../contextActions';
+import Actions, { SetStateAction, SetTransactionAction, SubUserBalanceAction } from '../contextActions';
 import { IAppState } from './AppState';
 
-type AppAction = SetTransactionAction | SetStateAction;
+type AppAction = SetTransactionAction | SetStateAction | SubUserBalanceAction;
 
 const appReducer = (
   state: IAppState,
@@ -17,6 +17,14 @@ const appReducer = (
       return {
         ...state,
         transactions: action.payload,
+      };
+    case Actions.SUB_USER_BALANCE:
+      return {
+        ...state,
+        accountData: {
+          ...state.accountData,
+          accountBalance: (Number(state.accountData.accountBalance) - Number(action.payload)),
+        }
       };
     default:
       return state;

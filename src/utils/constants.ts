@@ -1,4 +1,24 @@
-const defaults = {
+interface IHistoricalTransaction {
+  date: string;
+  amount: string;
+  recipient: string;
+}
+
+interface IPastTransactions {
+  [id: number]: IHistoricalTransaction;
+}
+
+interface IDefaultData {
+  accountName: string;
+  publicAddress: string;
+  accountBalance: number;
+  ethPrice: number;
+  pastTransactions: IPastTransactions
+}
+
+
+const defaults: IDefaultData = {
+  accountName: 'Account 1',
   publicAddress: '0xb701FdCc9Db05d5AD0d7B6aAbb42DBf09ec28Ad0',
   accountBalance: 3.405,
   ethPrice: 1700,
