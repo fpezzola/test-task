@@ -44,7 +44,7 @@ const AccountInfo = ({ account }: PropTypes) => {
         <AccountIdentification>
           <span className="name">{account.name}</span>
           <Tooltip title={account.publicAddress} open={forceOpen}>
-            <span className="address" title={account.publicAddress}>{truncate(account.publicAddress, 13)}</span>
+            <span className="address">{truncate(account.publicAddress, 13)}</span>
           </Tooltip>
         </AccountIdentification>
       </AccountInfoWrapper>

@@ -9,6 +9,7 @@ const BaseButton = styled(MuiButton)`
 const Button = (props: any) => {
   return (
     <BaseButton
+      disableElevation
       {...props}
     />
   )

@@ -28,7 +28,7 @@ const ETHDisplay = ({ value, large }: PropTypes) => {
     <ClickAwayListener onClickAway={() => setForceOpen(false)}>
       <Tooltip title={`${value.toString()} ETH`} open={forceOpen}>
         <Span large={large} onClick={() => setForceOpen(true)}>
-          <span className="balance__value" title={value.toString()}>{value}</span>
+          <span className="balance__value" >{value}</span>
           <span>&nbsp;ETH</span>
         </Span>
       </Tooltip>

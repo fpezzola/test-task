@@ -14,7 +14,7 @@ const DataDisplay = css`
 
 const Item = styled.div`
   display: grid;
-  grid-template-columns: 0.5fr 1fr 0.5fr;
+  grid-template-columns: 0.4fr 1fr 0.5fr;
   grid-column-gap: 10px;
 `;
 
