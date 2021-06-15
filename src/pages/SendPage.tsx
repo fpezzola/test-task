@@ -52,7 +52,7 @@ const HeaderWrapper = styled.div`
 
 const SendPage = () => {
   const appState = useAppState();
-  const { sendTransaction, isLoading } = useSendTransacation();
+  const { sendTransaction, isLoading, isDone, isErrored, error } = useSendTransacation();
   const [amount, setAmount] = React.useState(0);
   const [recipent, setRecipent] = React.useState('');
   const [snackbar, setSnackbar] = React.useState<any>({ open: false })
@@ -78,12 +78,25 @@ const SendPage = () => {
       return setSnackbar({ open: true, message })
     }
 
-    await sendTransaction({
+    sendTransaction({
       to: recipent,
       value: amount
     });
-    history.push('/send/done')
+
   }
+
+  React.useEffect(() => {
+    if (isErrored && error) {
+      setSnackbar({ open: true, message: error })
+    }
+  }, [isErrored, error]);
+
+
+  React.useEffect(() => {
+    if (isDone) {
+      history.push('/send/done')
+    }
+  }, [isDone, history]);
 
   return (
     <PageContainer>

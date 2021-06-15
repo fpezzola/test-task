@@ -12,14 +12,13 @@ interface IAsyncState {
   error: string | null;
 }
 const defaultInitialState: IAsyncState = { status: EAsyncStatus.Idle, data: null, error: null }
-function useAsync(initialState: IAsyncState | {}) {
-  const initialStateRef = React.useRef({
-    ...defaultInitialState,
-    ...initialState,
-  })
+const useAsync = (initialState: IAsyncState | {}) => {
   const [{ status, data, error }, setState] = React.useReducer(
     (s: IAsyncState, a: any) => ({ ...s, ...a }),
-    initialStateRef.current,
+    {
+      ...defaultInitialState,
+      ...initialState,
+    },
   )
 
   const safeSetState = useMountedDispatch(setState)
@@ -30,11 +29,11 @@ function useAsync(initialState: IAsyncState | {}) {
       return promise.then(
         (data: any) => {
           safeSetState({ data, status: EAsyncStatus.Done })
-          return data
+          return { data, ok: true }
         },
         (error: string) => {
           safeSetState({ status: EAsyncStatus.Errored, error })
-          return error
+          return { error, ok: false }
         },
       )
     },

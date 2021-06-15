@@ -7,13 +7,16 @@ import { useAppState } from "../context/background/AppState";
 export const useTransactionsList = () => {
   const ts = useTransactionsService();
   const { run, ...rest } = useAsync({ data: [] });
+  const fetch = React.useCallback(() => {
+    run(ts?.getListOfTransactions());
+  }, [run, ts])
   React.useEffect(() => {
-    run(ts?.getListOfTransactions())
-  }, [run, ts]);
+    fetch()
+  }, [fetch]);
 
   return {
     ...rest,
-    refetch: run
+    refetch: fetch
   }
 };
 
@@ -29,8 +32,8 @@ export const useAppTransactions = () => {
 
   return {
     transactions: state.transactions,
-    hasErrors: isErrored,
-    isLoading: isLoading,
+    isErrored,
+    isLoading,
     refetch
   }
 }
@@ -38,27 +41,28 @@ export const useAppTransactions = () => {
 export const useSendTransacation = () => {
   const ts = useTransactionsService();
   const appState = useAppState();
-  const { run, isLoading } = useAsync({ data: [] });
+  const { run, isLoading, isErrored, error, isDone } = useAsync({ data: [] });
   const sendTransaction = async ({ to, value }: { to: string, value: number }) => {
-    try {
-      const transaction = {
-        to,
-        value,
-        when: new Date(),
-        from: appState.state.accountData.publicAddress,
-      }
-      const newTransaction = await run(ts?.addTransaction(transaction));
-      appState.addTransaction(newTransaction)
-      appState.substractBalance(value);
-    } catch (e) {
-      return Promise.reject(e);
+    const transaction = {
+      to,
+      value,
+      when: new Date(),
+      from: appState.state.accountData.publicAddress,
     }
-    return Promise.resolve();
+    const { data } = await run(ts?.addTransaction(transaction));
+
+    if (data) {
+      appState.addTransaction(data)
+      appState.substractBalance(value);
+    }
   }
 
   return {
     sendTransaction,
-    isLoading
+    isLoading,
+    isErrored,
+    error,
+    isDone
   };
 }
 

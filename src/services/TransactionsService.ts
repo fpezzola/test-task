@@ -29,7 +29,6 @@ export class TransactionsService extends BaseService<TransactionsServiceState> {
 
     /**
      * It adds a transaction to the list
-     * TODO: Complete addTransaction code inside the Promise resolve function
      */
     public async addTransaction(newTransaction: Transaction): Promise<Transaction> {
         return new Promise<Transaction>((resolve) => {
@@ -38,13 +37,12 @@ export class TransactionsService extends BaseService<TransactionsServiceState> {
                 const updatedTransaction = { id: currentTransactions.length + 1, ...newTransaction }
                 this.updateState({ transactions: [...currentTransactions, updatedTransaction] });
                 resolve(updatedTransaction)
-            }, 5000);
+            }, 2000);
         })
     }
 
     /**
      * It returns the list of transactions
-     * TODO: Return the list via the promise resolve function
      */
     public async getListOfTransactions(): Promise<Array<Transaction>> {
         return new Promise<Array<Transaction>>((resolve) => {
